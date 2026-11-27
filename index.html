@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TSMC 투자 대시보드 — 실시간 시세 · 공정 비중 · 고객사 · 경쟁력</title>
+  <title>재석이와 함께하는 트슴트슴 — TSMC 실시간 투자 대시보드</title>
+
+  <!-- Open Graph / KakaoTalk Link Preview Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="재석이와 함께하는 트슴트슴" />
+  <meta property="og:description" content="건실하게 모아가는 TSMC 실시간 시세 · 원화 환산 · ADR 프리미엄 · 2nm/3nm 공정 비중 · 고객사 &amp; 경쟁력" />
+  <meta property="og:site_name" content="재석이와 함께하는 트슴트슴" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="재석이와 함께하는 트슴트슴" />
+  <meta name="twitter:description" content="건실하게 모아가는 TSMC 실시간 시세 · 원화 환산 · ADR 프리미엄 · 2nm/3nm 공정 비중 · 고객사 &amp; 경쟁력" />
 
   <!-- Pretendard & JetBrains Mono Fonts -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
@@ -154,6 +163,40 @@
       color: var(--text-main);
     }
 
+    /* Tactile Clickable Main Navigation Buttons */
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.375rem;
+      border-radius: 0.75rem;
+      font-weight: 700;
+      transition: all 0.18s ease;
+      cursor: pointer;
+    }
+    .nav-btn:active {
+      transform: scale(0.97);
+    }
+    .nav-btn-active {
+      background-color: var(--pill-active-bg);
+      color: var(--pill-active-text);
+      border: 1.5px solid var(--pill-active-bg);
+      box-shadow: 0 3px 10px rgba(25, 31, 40, 0.16);
+    }
+    .nav-btn-idle {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 1.5px solid var(--border-strong);
+      box-shadow: 0 1px 3px rgba(25, 31, 40, 0.07);
+    }
+    .nav-btn-idle:hover {
+      background-color: var(--bg-hover);
+      border-color: #3182F6;
+      color: #3182F6;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(49, 130, 246, 0.14);
+    }
+
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
@@ -184,7 +227,7 @@
             >tsmc</span>
           </div>
           <div class="leading-tight">
-            <div class="text-sm sm:text-[15px] font-extrabold text-main tracking-tight">TSMC 투자 대시보드</div>
+            <div class="text-sm sm:text-[15px] font-extrabold text-main tracking-tight">재석이와 함께하는 트슴트슴</div>
             <!-- Auto-computed KST Market Status Badge -->
             <div id="market-status-badge" class="text-[11px] text-muted font-medium truncate">
               장 상태 확인 중...
@@ -192,20 +235,26 @@
           </div>
         </a>
 
-        <!-- Desktop 2-Tab Navigation -->
-        <nav class="hidden md:flex items-center gap-1 ml-3 p-1 rounded-xl toss-sub shrink-0">
+        <!-- Desktop 2-Tab Tactile Navigation Buttons -->
+        <nav class="hidden md:flex items-center gap-2 ml-3 shrink-0" aria-label="메인 메뉴">
           <button
             type="button"
             id="nav-dashboard"
             onclick="switchMainTab('dashboard')"
-            class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer tab-active"
-          >실시간 대시보드</button>
+            class="nav-btn nav-btn-active px-3.5 py-2 text-xs"
+          >
+            <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+            <span>실시간 대시보드</span>
+          </button>
           <button
             type="button"
             id="nav-company"
             onclick="switchMainTab('company')"
-            class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer tab-idle"
-          >고객사 · 경쟁력</button>
+            class="nav-btn nav-btn-idle px-3.5 py-2 text-xs"
+          >
+            <i data-lucide="building-2" class="w-3.5 h-3.5"></i>
+            <span>고객사 · 경쟁력</span>
+          </button>
         </nav>
       </div>
 
@@ -248,22 +297,26 @@
       </div>
     </div>
 
-    <!-- Mobile 2-Tab Navigation Bar -->
+    <!-- Mobile 2-Tab Tactile Navigation Bar -->
     <div class="md:hidden border-t border-[var(--border-card)] px-4 py-2 flex items-center gap-2">
-      <div class="flex items-center gap-1 p-1 rounded-xl toss-sub flex-1">
-        <button
-          type="button"
-          id="nav-dashboard-m"
-          onclick="switchMainTab('dashboard')"
-          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer tab-active"
-        >실시간 대시보드</button>
-        <button
-          type="button"
-          id="nav-company-m"
-          onclick="switchMainTab('company')"
-          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer tab-idle"
-        >고객사 · 경쟁력</button>
-      </div>
+      <button
+        type="button"
+        id="nav-dashboard-m"
+        onclick="switchMainTab('dashboard')"
+        class="nav-btn nav-btn-active flex-1 py-2 text-xs"
+      >
+        <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+        <span>실시간 대시보드</span>
+      </button>
+      <button
+        type="button"
+        id="nav-company-m"
+        onclick="switchMainTab('company')"
+        class="nav-btn nav-btn-idle flex-1 py-2 text-xs"
+      >
+        <i data-lucide="building-2" class="w-3.5 h-3.5"></i>
+        <span>고객사 · 경쟁력</span>
+      </button>
     </div>
   </header>
 
@@ -437,17 +490,24 @@
       </section>
 
       <!-- =====================================================
-           BLOCK C: 실시간 주가 차트 (TRADINGVIEW WIDGET)
+           BLOCK C: TSM 단독 실시간 주가 차트 (TRADINGVIEW WIDGET)
            ===================================================== -->
-      <section aria-label="실시간 주가 차트" class="toss-card rounded-2xl p-4 sm:p-5">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="tv-tabs">
-            <button type="button" data-symbol="NYSE:TSM" class="tv-tab px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer tab-active">TSM (미국 ADR)</button>
-            <button type="button" data-symbol="TWSE:2330" class="tv-tab px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer tab-idle">2330.TW (대만 본주)</button>
-            <button type="button" data-symbol="NASDAQ:NVDA" class="tv-tab px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer tab-idle">NVDA (엔비디아)</button>
-            <button type="button" data-symbol="NASDAQ:AAPL" class="tv-tab px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer tab-idle">AAPL (애플)</button>
+      <section aria-label="TSM 실시간 주가 차트" class="toss-card rounded-2xl p-4 sm:p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3.5">
+          <div class="flex items-center gap-2">
+            <h2 class="text-sm sm:text-base font-extrabold text-main">TSM 실시간 차트</h2>
+            <span id="tv-symbol-badge" class="px-2 py-0.5 rounded-md toss-sub text-[11px] font-mono font-bold text-sub">NYSE:TSM</span>
+            <button
+              type="button"
+              id="btn-reset-tsm"
+              onclick="initTradingView('NYSE:TSM')"
+              class="hidden px-2.5 py-1 rounded-lg bg-krDown/10 text-krDown text-[11px] font-bold hover:bg-krDown/20 transition cursor-pointer"
+            >← TSM으로 돌아가기</button>
           </div>
-          <span class="text-[11px] font-mono text-muted">TradingView 실시간 차트</span>
+          <div class="flex items-center gap-1.5 text-[11px] text-muted">
+            <i data-lucide="search" class="w-3.5 h-3.5 shrink-0"></i>
+            <span>다른 종목은 차트 좌측 상단에서 바로 검색할 수 있어요</span>
+          </div>
         </div>
 
         <div id="tv-container" class="w-full h-[410px] sm:h-[460px] rounded-xl overflow-hidden border border-[var(--border-card)]"></div>
@@ -693,13 +753,13 @@
           <span class="px-2.5 py-1 rounded-lg bg-tsmcRed/10 text-tsmcRed text-[11px] font-mono font-bold">MARKET SHARE 75.0%</span>
         </div>
 
-        <!-- Top: Global Pure-Play Foundry Market Share Horizontal Bar Chart -->
+        <!-- Top: Global Pure-Play Foundry Market Share Horizontal Bar Chart (with Intel Foundry) -->
         <div class="toss-sub rounded-xl p-4">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-bold text-main">글로벌 순수 파운드리 점유율 비교</span>
             <span class="text-[11px] font-mono text-muted">2026 Q3 기준</span>
           </div>
-          <div class="relative h-[175px] w-full">
+          <div class="relative h-[205px] w-full">
             <canvas id="marketShareChart"></canvas>
           </div>
         </div>
@@ -841,7 +901,7 @@
        ========================================================= -->
   <footer class="border-t border-[var(--border-card)] bg-[var(--bg-card)] mt-8">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-muted">
-      <span>TSMC 투자 대시보드 · 비공식 개인 투자자 정보 페이지 (Vercel 실시간 API 지원)</span>
+      <span>재석이와 함께하는 트슴트슴 · 비공식 개인 투자자 정보 페이지 (Vercel 실시간 API 지원)</span>
       <span id="last-updated-label" class="font-mono tabular-nums">업데이트 확인 중...</span>
     </div>
   </footer>
@@ -986,10 +1046,10 @@
         const dEl = document.getElementById(dId);
         const cEl = document.getElementById(cId);
         if (dEl && cEl) {
-          dEl.classList.toggle('tab-active', isDash);
-          dEl.classList.toggle('tab-idle', !isDash);
-          cEl.classList.toggle('tab-active', !isDash);
-          cEl.classList.toggle('tab-idle', isDash);
+          dEl.classList.toggle('nav-btn-active', isDash);
+          dEl.classList.toggle('nav-btn-idle', !isDash);
+          cEl.classList.toggle('nav-btn-active', !isDash);
+          cEl.classList.toggle('nav-btn-idle', isDash);
         }
       });
 
@@ -1223,16 +1283,16 @@
     }
 
     // =========================================================
-    // 5. TRADINGVIEW REAL-TIME WIDGET
+    // 5. TRADINGVIEW REAL-TIME WIDGET (TSM FOCUSED + SEARCHABLE)
     // =========================================================
     function initTradingView(symbol) {
       state.tvSymbol = symbol;
 
-      document.querySelectorAll('.tv-tab').forEach((btn) => {
-        const active = btn.dataset.symbol === symbol;
-        btn.classList.toggle('tab-active', active);
-        btn.classList.toggle('tab-idle', !active);
-      });
+      const symBadge = document.getElementById('tv-symbol-badge');
+      if (symBadge) symBadge.textContent = symbol;
+
+      const resetBtn = document.getElementById('btn-reset-tsm');
+      if (resetBtn) resetBtn.classList.toggle('hidden', symbol === 'NYSE:TSM');
 
       const container = document.getElementById('tv-container');
       if (!container) return;
@@ -1515,21 +1575,21 @@
         });
       }
 
-      // 2) Global Foundry Market Share Horizontal Bar Chart
+      // 2) Global Foundry Market Share Horizontal Bar Chart (Includes Intel Foundry)
       const mCtx = document.getElementById('marketShareChart');
       if (mCtx) {
         if (charts.marketShare) charts.marketShare.destroy();
         charts.marketShare = new Chart(mCtx, {
           type: 'bar',
           data: {
-            labels: ['TSMC', '삼성 파운드리', 'SMIC', '기타'],
+            labels: ['TSMC', '삼성 파운드리', 'SMIC', '인텔 파운드리', '기타'],
             datasets: [
               {
                 label: '점유율 (%)',
-                data: [75.0, 6.5, 5.5, 13.0],
-                backgroundColor: ['#D71920', '#3182F6', '#6B7684', c.dark ? '#484F58' : '#CBD5E1'],
+                data: [75.0, 6.5, 5.5, 0.8, 12.2],
+                backgroundColor: ['#D71920', '#3182F6', '#6B7684', '#0068B5', c.dark ? '#484F58' : '#CBD5E1'],
                 borderRadius: 6,
-                barThickness: 22,
+                barThickness: 20,
               },
             ],
           },
@@ -1541,7 +1601,10 @@
               legend: { display: false },
               tooltip: {
                 callbacks: {
-                  label: (ctx) => ` 글로벌 점유율: ${ctx.parsed.x.toFixed(1)}%`,
+                  label: (ctx) =>
+                    ctx.label === '인텔 파운드리'
+                      ? ' 글로벌 점유율: 1% 미만 (약 0.8%)'
+                      : ` 글로벌 점유율: ${ctx.parsed.x.toFixed(1)}%`,
                 },
               },
             },
@@ -1779,11 +1842,6 @@
     // =========================================================
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-
-      // Bind TradingView quick-switch tabs
-      document.querySelectorAll('.tv-tab').forEach((btn) => {
-        btn.addEventListener('click', () => initTradingView(btn.dataset.symbol));
-      });
 
       // Initial renders
       updateMarketStatus();
