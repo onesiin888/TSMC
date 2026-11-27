@@ -302,7 +302,7 @@
            BLOCK 1: 4 KEY KPI CARDS
            ===================================================== -->
       <section aria-label="핵심 시세 지표" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- KPI 1: 미국 ADR (TSM) -->
+        <!-- KPI 1: 미국 ADR (TSM) + 원화 환산가 -->
         <div class="toss-card rounded-2xl p-5 flex flex-col justify-between gap-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-sub">미국 ADR (TSM)</span>
@@ -313,11 +313,12 @@
               <span id="kpi-tsm-price" class="text-2xl font-extrabold font-mono text-main tabular-nums">$342.34</span>
               <span id="kpi-tsm-change" class="text-xs font-bold font-mono text-krDown tabular-nums">-1.96%</span>
             </div>
-            <div id="kpi-tsm-note" class="text-[11px] text-muted mt-1.5">시총 ~$1.77T · 애프터마켓 변동 반영</div>
+            <div id="kpi-tsm-krw" class="text-sm font-bold font-mono text-sub mt-1 tabular-nums">≈ 458,681원</div>
+            <div id="kpi-tsm-note" class="text-[11px] text-muted mt-1">정규장 종가 기준 · 1 ADR = 본주 5주</div>
           </div>
         </div>
 
-        <!-- KPI 2: 대만 본주 (2330.TW) -->
+        <!-- KPI 2: 대만 본주 (2330.TW) + 1주/5주 원화 환산가 -->
         <div class="toss-card rounded-2xl p-5 flex flex-col justify-between gap-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-sub">대만 본주 (2330.TW)</span>
@@ -325,14 +326,18 @@
           </div>
           <div>
             <div class="flex items-baseline gap-2">
-              <span id="kpi-tw-price" class="text-2xl font-extrabold font-mono text-main tabular-nums">NT$2,145</span>
-              <span id="kpi-tw-change" class="text-xs font-bold font-mono text-krDown tabular-nums">-3.59%</span>
+              <span id="kpi-tw-price" class="text-2xl font-extrabold font-mono text-main tabular-nums">NT$2,180</span>
+              <span id="kpi-tw-change" class="text-xs font-bold font-mono text-krUp tabular-nums">+1.63%</span>
             </div>
-            <div class="text-[11px] text-muted mt-1.5">한국 오후 2:30 마감 · 밤 미장 선행지표</div>
+            <div class="flex flex-wrap items-center gap-1.5 mt-1">
+              <span id="kpi-tw-krw" class="text-sm font-bold font-mono text-sub tabular-nums">≈ 88,629원</span>
+              <span id="kpi-tw5-krw" class="px-1.5 py-0.5 rounded-md toss-sub text-[10px] font-mono font-semibold text-sub tabular-nums">5주(1 ADR) ≈ 443,144원</span>
+            </div>
+            <div class="text-[11px] text-muted mt-1">한국 오후 2:30 마감 · 밤 미장 선행지표</div>
           </div>
         </div>
 
-        <!-- KPI 3: ADR 프리미엄 (%) + 인라인 직접 계산 토글 -->
+        <!-- KPI 3: ADR 프리미엄 (%) + 이론가/원화 차이 + 인라인 직접 계산 -->
         <div class="toss-card rounded-2xl p-5 flex flex-col justify-between gap-2.5">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-sub">ADR 프리미엄</span>
@@ -344,26 +349,30 @@
           </div>
           <div>
             <div class="flex items-baseline gap-2">
-              <span id="kpi-adr-prem" class="text-2xl font-extrabold font-mono text-krUp tabular-nums">+1.67%</span>
+              <span id="kpi-adr-prem" class="text-2xl font-extrabold font-mono text-krUp tabular-nums">+3.51%</span>
               <span id="kpi-adr-badge" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-600">적정 구간</span>
             </div>
-            <div id="kpi-adr-fair" class="text-[11px] text-muted font-mono mt-1.5 tabular-nums">이론가 $336.73 (본주×5÷환율)</div>
+            <div id="kpi-adr-fair" class="text-[11px] text-sub font-mono mt-1.5 leading-relaxed tabular-nums">이론가 $330.74 (443,144원) · 차이 +15,537원</div>
           </div>
 
-          <!-- Inline ADR Calculator Drawer -->
+          <!-- Inline ADR Calculator Drawer (4 Inputs: TSM, 2330.TW, USD/TWD, USD/KRW) -->
           <div id="adr-calc-drawer" class="hidden pt-3 mt-1 border-t border-[var(--border-card)] space-y-2">
-            <div class="grid grid-cols-3 gap-1.5">
+            <div class="grid grid-cols-2 gap-1.5">
               <div>
                 <label for="calc-tsm" class="block text-[10px] text-muted mb-0.5">TSM ($)</label>
                 <input id="calc-tsm" type="number" step="0.1" value="342.34" oninput="recalcAdrFromInputs()" class="w-full px-2 py-1 rounded-lg text-xs font-mono font-bold toss-input tabular-nums" />
               </div>
               <div>
                 <label for="calc-tw" class="block text-[10px] text-muted mb-0.5">본주 (NT$)</label>
-                <input id="calc-tw" type="number" step="5" value="2145" oninput="recalcAdrFromInputs()" class="w-full px-2 py-1 rounded-lg text-xs font-mono font-bold toss-input tabular-nums" />
+                <input id="calc-tw" type="number" step="5" value="2180" oninput="recalcAdrFromInputs()" class="w-full px-2 py-1 rounded-lg text-xs font-mono font-bold toss-input tabular-nums" />
               </div>
               <div>
                 <label for="calc-fx" class="block text-[10px] text-muted mb-0.5">USD/TWD</label>
-                <input id="calc-fx" type="number" step="0.05" value="31.85" oninput="recalcAdrFromInputs()" class="w-full px-2 py-1 rounded-lg text-xs font-mono font-bold toss-input tabular-nums" />
+                <input id="calc-fx" type="number" step="0.01" value="32.956" oninput="recalcAdrFromInputs()" class="w-full px-2 py-1 rounded-lg text-xs font-mono font-bold toss-input tabular-nums" />
+              </div>
+              <div>
+                <label for="calc-krw" class="block text-[10px] text-muted mb-0.5">USD/KRW</label>
+                <input id="calc-krw" type="number" step="1" value="1339.84" oninput="recalcAdrFromInputs()" class="w-full px-2 py-1 rounded-lg text-xs font-mono font-bold toss-input tabular-nums" />
               </div>
             </div>
             <div class="flex items-center justify-between text-[10px] text-muted">
@@ -373,18 +382,23 @@
           </div>
         </div>
 
-        <!-- KPI 4: 원/달러 환율 (USD/KRW) & USD/TWD -->
+        <!-- KPI 4: 환율 & 다음 일정 -->
         <div class="toss-card rounded-2xl p-5 flex flex-col justify-between gap-3">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-sub">원/달러 환율</span>
+            <span class="text-xs font-bold text-sub">환율 &amp; 다음 일정</span>
             <span id="kpi-fx-badge" class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600">LIVE FX</span>
           </div>
           <div>
             <div class="flex items-baseline gap-1.5">
-              <span id="kpi-usdkrw" class="text-2xl font-extrabold font-mono text-main tabular-nums">₩1,398.5</span>
-              <span class="text-xs font-semibold text-muted">KRW</span>
+              <span id="kpi-usdkrw" class="text-2xl font-extrabold font-mono text-main tabular-nums">1,339.84원</span>
+              <span class="text-[11px] font-semibold text-muted">USD/KRW</span>
             </div>
-            <div id="kpi-usdtwd" class="text-[11px] text-muted font-mono mt-1.5 tabular-nums">USD/TWD 31.85 · 실시간 환율</div>
+            <div id="kpi-fx-sub" class="text-[11px] text-sub font-mono mt-1 tabular-nums">TWD/KRW 40.66원 · USD/TWD 32.96</div>
+            <div class="flex items-center gap-2 mt-1.5 text-[10px] font-mono text-muted">
+              <span>11월 매출 <strong id="kpi-dday-rev" class="text-krUp">D-13</strong></span>
+              <span>·</span>
+              <span>Q4 실적 <strong id="kpi-dday-earn" class="text-main">D-48</strong></span>
+            </div>
           </div>
         </div>
       </section>
@@ -760,7 +774,7 @@
        ========================================================= -->
   <script>
     // =========================================================
-    // 1. STATE & BASELINE DATA
+    // 1. STATE & BASELINE DATA (NOV 27, 2026 SNAPSHOT)
     // =========================================================
     const state = {
       theme: 'light', // 'light' (Toss Clean White) | 'dark' (Deep Charcoal)
@@ -772,10 +786,10 @@
       market: {
         tsmPrice: 342.34,
         tsmChangePct: -1.96,
-        twPrice: 2145,
-        twChangePct: -3.59,
-        usdKrw: 1398.5,
-        usdTwd: 31.85,
+        twPrice: 2180,
+        twChangePct: 1.63,
+        usdKrw: 1339.84,
+        usdTwd: 32.956,
       },
       news: [],
     };
@@ -848,66 +862,32 @@
     ];
 
     // =========================================================
-    // 2. TAB & THEME MANAGEMENT
-    // =========================================================
-    function switchMainTab(tab) {
-      state.activeTab = tab;
-      const isDash = tab === 'dashboard';
-
-      document.getElementById('tab-dashboard').classList.toggle('hidden', !isDash);
-      document.getElementById('tab-company').classList.toggle('hidden', isDash);
-
-      ['nav-dashboard', 'nav-dashboard-m'].forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.classList.toggle('tab-active', isDash);
-          el.classList.toggle('tab-idle', !isDash);
-        }
-      });
-
-      ['nav-company', 'nav-company-m'].forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.classList.toggle('tab-active', !isDash);
-          el.classList.toggle('tab-idle', isDash);
-        }
-      });
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleTheme() {
-      state.theme = state.theme === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', state.theme);
-
-      const icon = document.getElementById('theme-icon');
-      icon.setAttribute('data-lucide', state.theme === 'dark' ? 'sun' : 'moon');
-      lucide.createIcons();
-
-      // Re-render TradingView & Chart.js to match active theme
-      initTradingView(state.tvSymbol);
-      renderMonthlyRevenueChart();
-      renderClientBars();
-    }
-
-    // =========================================================
-    // 3. D-DAY COUNTDOWN (NEXT MONTHLY REVENUE RELEASE)
+    // 3. D-DAY COUNTDOWN (MONTHLY REVENUE & Q4 EARNINGS)
     // =========================================================
     function updateDDay() {
       const now = new Date();
       // Next TSMC Monthly Revenue release: Dec 10, 2026 14:30 KST
-      const target = new Date('2026-12-10T14:30:00+09:00');
-      const diffDays = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
-      const label = diffDays <= 0 ? 'D-DAY' : `D-${diffDays}`;
+      const revTarget = new Date('2026-12-10T14:30:00+09:00');
+      const revDays = Math.ceil((revTarget - now) / (1000 * 60 * 60 * 24));
+      const revLabel = revDays <= 0 ? 'D-DAY' : `D-${revDays}`;
+
+      // Next Q4 Earnings release: Jan 14, 2027 15:00 KST
+      const earnTarget = new Date('2027-01-14T15:00:00+09:00');
+      const earnDays = Math.ceil((earnTarget - now) / (1000 * 60 * 60 * 24));
+      const earnLabel = earnDays <= 0 ? 'D-DAY' : `D-${earnDays}`;
 
       const d1 = document.getElementById('header-dday');
       const d2 = document.getElementById('header-dday-m');
-      if (d1) d1.textContent = label;
-      if (d2) d2.textContent = `매출 ${label}`;
+      const d3 = document.getElementById('kpi-dday-rev');
+      const d4 = document.getElementById('kpi-dday-earn');
+      if (d1) d1.textContent = revLabel;
+      if (d2) d2.textContent = `매출 ${revLabel}`;
+      if (d3) d3.textContent = revLabel;
+      if (d4) d4.textContent = earnLabel;
     }
 
     // =========================================================
-    // 4. KPI RENDERING & INLINE ADR CALCULATOR
+    // 4. KPI RENDERING & INLINE ADR CALCULATOR (WITH KRW CONVERSION)
     // =========================================================
     function formatKoreanPct(pct) {
       const num = Number(pct) || 0;
@@ -925,27 +905,39 @@
     function renderKpis() {
       const { tsmPrice, tsmChangePct, twPrice, twChangePct, usdKrw, usdTwd } = state.market;
 
-      // KPI 1: TSM
+      // Cross FX & KRW Conversions
+      const twdKrw = usdTwd > 0 ? usdKrw / usdTwd : 0;
+      const tsmKrw = Math.round(tsmPrice * usdKrw);
+      const tw1Krw = Math.round(twPrice * twdKrw);
+      const tw5Krw = Math.round(twPrice * 5 * twdKrw);
+
+      // KPI 1: TSM ADR + KRW
       document.getElementById('kpi-tsm-price').textContent = `$${tsmPrice.toFixed(2)}`;
       const tsmChgEl = document.getElementById('kpi-tsm-change');
       tsmChgEl.textContent = formatKoreanPct(tsmChangePct);
       applyPctColor(tsmChgEl, tsmChangePct);
+      document.getElementById('kpi-tsm-krw').textContent = `≈ ${tsmKrw.toLocaleString('ko-KR')}원`;
 
-      // KPI 2: 2330.TW
+      // KPI 2: 2330.TW + 1주/5주 KRW
       document.getElementById('kpi-tw-price').textContent = `NT$${Math.round(twPrice).toLocaleString('ko-KR')}`;
       const twChgEl = document.getElementById('kpi-tw-change');
       twChgEl.textContent = formatKoreanPct(twChangePct);
       applyPctColor(twChgEl, twChangePct);
+      document.getElementById('kpi-tw-krw').textContent = `≈ ${tw1Krw.toLocaleString('ko-KR')}원`;
+      document.getElementById('kpi-tw5-krw').textContent = `5주(1 ADR) ≈ ${tw5Krw.toLocaleString('ko-KR')}원`;
 
       // KPI 3: ADR Premium (1 ADR = 5 TW shares)
-      const fairPrice = usdTwd > 0 ? (twPrice * 5) / usdTwd : 0;
-      const premium = fairPrice > 0 ? ((tsmPrice - fairPrice) / fairPrice) * 100 : 0;
+      const theoUsd = usdTwd > 0 ? (twPrice * 5) / usdTwd : 0;
+      const premium = theoUsd > 0 ? ((tsmPrice / theoUsd) - 1) * 100 : 0;
+      const krwGap = tsmKrw - tw5Krw;
+      const gapText = `${krwGap >= 0 ? '+' : '-'}${Math.abs(krwGap).toLocaleString('ko-KR')}원`;
 
       const premEl = document.getElementById('kpi-adr-prem');
       premEl.textContent = formatKoreanPct(premium);
       applyPctColor(premEl, premium);
 
-      document.getElementById('kpi-adr-fair').textContent = `이론가 $${fairPrice.toFixed(2)} (본주×5÷환율)`;
+      document.getElementById('kpi-adr-fair').textContent =
+        `이론가 $${theoUsd.toFixed(2)} (${tw5Krw.toLocaleString('ko-KR')}원) · 차이 ${gapText}`;
 
       const badge = document.getElementById('kpi-adr-badge');
       if (premium < 0) {
@@ -966,12 +958,13 @@
       if (!state.manualAdrOverride) {
         document.getElementById('calc-tsm').value = tsmPrice.toFixed(2);
         document.getElementById('calc-tw').value = Math.round(twPrice);
-        document.getElementById('calc-fx').value = usdTwd.toFixed(2);
+        document.getElementById('calc-fx').value = usdTwd.toFixed(3);
+        document.getElementById('calc-krw').value = usdKrw.toFixed(2);
       }
 
-      // KPI 4: USD/KRW & USD/TWD
-      document.getElementById('kpi-usdkrw').textContent = `₩${usdKrw.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`;
-      document.getElementById('kpi-usdtwd').textContent = `USD/TWD ${usdTwd.toFixed(2)} · 실시간 환율`;
+      // KPI 4: USD/KRW, TWD/KRW, USD/TWD
+      document.getElementById('kpi-usdkrw').textContent = `${usdKrw.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}원`;
+      document.getElementById('kpi-fx-sub').textContent = `TWD/KRW ${twdKrw.toFixed(2)}원 · USD/TWD ${usdTwd.toFixed(2)}`;
     }
 
     function toggleAdrDrawer() {
@@ -983,16 +976,20 @@
       const tsm = parseFloat(document.getElementById('calc-tsm').value);
       const tw = parseFloat(document.getElementById('calc-tw').value);
       const fx = parseFloat(document.getElementById('calc-fx').value);
+      const krw = parseFloat(document.getElementById('calc-krw').value);
       if (tsm > 0) state.market.tsmPrice = tsm;
       if (tw > 0) state.market.twPrice = tw;
       if (fx > 0) state.market.usdTwd = fx;
+      if (krw > 0) state.market.usdKrw = krw;
       renderKpis();
     }
 
     function resetAdrDefaults() {
       state.manualAdrOverride = false;
       state.market.tsmPrice = 342.34;
-      state.market.twPrice = 2145;
+      state.market.twPrice = 2180;
+      state.market.usdTwd = 32.956;
+      state.market.usdKrw = 1339.84;
       loadLiveData(true);
     }
 
@@ -1262,8 +1259,8 @@
             if (data.tw2330?.price) state.market.twPrice = Number(data.tw2330.price);
             if (data.tw2330?.changePct !== undefined) state.market.twChangePct = Number(data.tw2330.changePct);
             if (data.usdTwd) state.market.usdTwd = Number(data.usdTwd);
+            if (data.usdKrw) state.market.usdKrw = Number(data.usdKrw);
           }
-          if (data.usdKrw) state.market.usdKrw = Number(data.usdKrw);
           if (Array.isArray(data.news) && data.news.length > 0) {
             state.news = data.news;
           }
@@ -1294,8 +1291,8 @@
       try {
         const fxJson = await fetchWithTimeout('https://open.er-api.com/v6/latest/USD', 4500);
         if (fxJson?.rates?.KRW && fxJson?.rates?.TWD) {
-          state.market.usdKrw = Number(fxJson.rates.KRW);
           if (!state.manualAdrOverride) {
+            state.market.usdKrw = Number(fxJson.rates.KRW);
             state.market.usdTwd = Number(fxJson.rates.TWD);
           }
           fxLiveOk = true;
