@@ -159,8 +159,6 @@ module.exports = async function handler(req, res) {
   res.setHeader('CDN-Cache-Control', 'no-store');
   res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
 
-  const finnhubKey = process.env.FINNHUB_API_KEY || '';
-
   const payload = {
     ok: false,
     updatedAt: new Date().toISOString(),
@@ -177,77 +175,85 @@ module.exports = async function handler(req, res) {
     },
   };
 
-  // Run all upstream providers in parallel for lowest latency
-  const [finnhubRes, yahooTsmRes, yahooTwRes, dunamuFxRes, yahooKrwRes, yahooTwdRes, erFxRes] =
-    await Promise.allSettled([
-      finnhubKey ? fetchFinnhubQuote('TSM', finnhubKey) : Promise.resolve(null),
-      fetchYahooChart('TSM'),
-      fetchYahooChart('2330.TW'),
-      fetchDunamuFx(),
-      fetchYahooChart('KRW=X'),
-      fetchYahooChart('TWD=X'),
-      fetchJson('https://open.er-api.com/v6/latest/USD', 3500),
-    ]);
+  try {
+    const finnhubKey = process.env.FINNHUB_API_KEY || '';
 
-  // 1) TSM (NYSE ADR): Prefer Yahoo v8 during pre/after-hours or Finnhub during regular market
-  const yahooTsm = yahooTsmRes.status === 'fulfilled' ? yahooTsmRes.value : null;
-  const finnhubTsm =
-    finnhubRes.status === 'fulfilled' && finnhubRes.value ? finnhubRes.value : null;
+    // Run all upstream providers in parallel for lowest latency
+    const [finnhubRes, yahooTsmRes, yahooTwRes, dunamuFxRes, yahooKrwRes, yahooTwdRes, erFxRes] =
+      await Promise.allSettled([
+        finnhubKey ? fetchFinnhubQuote('TSM', finnhubKey) : Promise.resolve(null),
+        fetchYahooChart('TSM'),
+        fetchYahooChart('2330.TW'),
+        fetchDunamuFx(),
+        fetchYahooChart('KRW=X'),
+        fetchYahooChart('TWD=X'),
+        fetchJson('https://open.er-api.com/v6/latest/USD', 3500),
+      ]);
 
-  if (finnhubTsm && (!yahooTsm || yahooTsm.session === '정규장 LIVE')) {
-    payload.tsm = {
-      price: finnhubTsm.price,
-      changePct: finnhubTsm.changePct,
-      session: finnhubTsm.session,
-    };
-    payload.sources.tsm = finnhubTsm.source;
-  } else if (yahooTsm) {
-    payload.tsm = {
-      price: Number(yahooTsm.price.toFixed(2)),
-      changePct: yahooTsm.changePct,
-      session: yahooTsm.session,
-    };
-    payload.sources.tsm = yahooTsm.source;
-  }
+    // 1) TSM (NYSE ADR): Prefer Yahoo v8 during pre/after-hours or Finnhub during regular market
+    const yahooTsm = yahooTsmRes.status === 'fulfilled' ? yahooTsmRes.value : null;
+    const finnhubTsm =
+      finnhubRes.status === 'fulfilled' && finnhubRes.value ? finnhubRes.value : null;
 
-  // 2) 2330.TW (Taiwan Main Stock)
-  if (yahooTwRes.status === 'fulfilled' && yahooTwRes.value) {
-    payload.tw2330 = {
-      price: Number(yahooTwRes.value.price.toFixed(2)),
-      changePct: yahooTwRes.value.changePct,
-    };
-    payload.sources.tw2330 = yahooTwRes.value.source;
-  }
-
-  // 3) FX Rates: 1st Hana Bank (Dunamu) -> 2nd Yahoo Global FX -> 3rd open.er-api
-  if (dunamuFxRes.status === 'fulfilled' && dunamuFxRes.value) {
-    payload.fx.usdKrw = dunamuFxRes.value.usdKrw;
-    payload.fx.usdTwd = dunamuFxRes.value.usdTwd;
-    payload.sources.fx = dunamuFxRes.value.source;
-  }
-
-  if (!payload.fx.usdKrw && yahooKrwRes.status === 'fulfilled' && yahooKrwRes.value) {
-    payload.fx.usdKrw = Number(yahooKrwRes.value.price.toFixed(2));
-    payload.sources.fx = payload.sources.fx || 'Yahoo FX';
-  }
-
-  if (!payload.fx.usdTwd && yahooTwdRes.status === 'fulfilled' && yahooTwdRes.value) {
-    payload.fx.usdTwd = Number(yahooTwdRes.value.price.toFixed(3));
-    payload.sources.fx = payload.sources.fx || 'Yahoo FX';
-  }
-
-  if (erFxRes.status === 'fulfilled' && erFxRes.value?.rates) {
-    if (!payload.fx.usdKrw && erFxRes.value.rates.KRW) {
-      payload.fx.usdKrw = Number(erFxRes.value.rates.KRW);
-      payload.sources.fx = payload.sources.fx || 'open.er-api';
+    if (finnhubTsm && (!yahooTsm || yahooTsm.session === '정규장 LIVE')) {
+      payload.tsm = {
+        price: finnhubTsm.price,
+        changePct: finnhubTsm.changePct,
+        session: finnhubTsm.session,
+      };
+      payload.sources.tsm = finnhubTsm.source;
+    } else if (yahooTsm) {
+      payload.tsm = {
+        price: Number(yahooTsm.price.toFixed(2)),
+        changePct: yahooTsm.changePct,
+        session: yahooTsm.session,
+      };
+      payload.sources.tsm = yahooTsm.source;
     }
-    if (!payload.fx.usdTwd && erFxRes.value.rates.TWD) {
-      payload.fx.usdTwd = Number(erFxRes.value.rates.TWD);
-      payload.sources.fx = payload.sources.fx || 'open.er-api';
+
+    // 2) 2330.TW (Taiwan Main Stock)
+    if (yahooTwRes.status === 'fulfilled' && yahooTwRes.value) {
+      payload.tw2330 = {
+        price: Number(yahooTwRes.value.price.toFixed(2)),
+        changePct: yahooTwRes.value.changePct,
+      };
+      payload.sources.tw2330 = yahooTwRes.value.source;
     }
+
+    // 3) FX Rates: 1st Hana Bank (Dunamu) -> 2nd Yahoo Global FX -> 3rd open.er-api
+    if (dunamuFxRes.status === 'fulfilled' && dunamuFxRes.value) {
+      payload.fx.usdKrw = dunamuFxRes.value.usdKrw;
+      payload.fx.usdTwd = dunamuFxRes.value.usdTwd;
+      payload.sources.fx = dunamuFxRes.value.source;
+    }
+
+    if (!payload.fx.usdKrw && yahooKrwRes.status === 'fulfilled' && yahooKrwRes.value) {
+      payload.fx.usdKrw = Number(yahooKrwRes.value.price.toFixed(2));
+      payload.sources.fx = payload.sources.fx || 'Yahoo FX';
+    }
+
+    if (!payload.fx.usdTwd && yahooTwdRes.status === 'fulfilled' && yahooTwdRes.value) {
+      payload.fx.usdTwd = Number(yahooTwdRes.value.price.toFixed(3));
+      payload.sources.fx = payload.sources.fx || 'Yahoo FX';
+    }
+
+    if (erFxRes.status === 'fulfilled' && erFxRes.value?.rates) {
+      if (!payload.fx.usdKrw && erFxRes.value.rates.KRW) {
+        payload.fx.usdKrw = Number(erFxRes.value.rates.KRW);
+        payload.sources.fx = payload.sources.fx || 'open.er-api';
+      }
+      if (!payload.fx.usdTwd && erFxRes.value.rates.TWD) {
+        payload.fx.usdTwd = Number(erFxRes.value.rates.TWD);
+        payload.sources.fx = payload.sources.fx || 'open.er-api';
+      }
+    }
+
+    payload.ok = Boolean(payload.tsm || payload.tw2330 || payload.fx.usdKrw);
+    return res.status(200).json(payload);
+  } catch (err) {
+    return res.status(200).json({
+      ...payload,
+      error: err?.message || 'Unexpected error',
+    });
   }
-
-  payload.ok = Boolean(payload.tsm || payload.tw2330 || payload.fx.usdKrw);
-
-  return res.status(200).json(payload);
 };
