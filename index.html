@@ -211,7 +211,6 @@
       <!-- Left: Official TSMC SVG Logo + Title + Live Market Status -->
       <div class="flex items-center gap-3 min-w-0">
         <a href="#" onclick="switchMainTab('dashboard'); return false;" class="flex items-center gap-2.5 shrink-0">
-          <!-- White pill wrapper in dark mode keeps the official SVG crisp -->
           <div class="logo-pill rounded-xl px-2 py-1 flex items-center justify-center">
             <img
               id="tsmc-official-logo"
@@ -228,7 +227,6 @@
           </div>
           <div class="leading-tight">
             <div class="text-sm sm:text-[15px] font-extrabold text-main tracking-tight">재석이와 함께하는 트슴트슴</div>
-            <!-- Auto-computed KST Market Status Badge -->
             <div id="market-status-badge" class="text-[11px] text-muted font-medium truncate">
               장 상태 확인 중...
             </div>
@@ -260,7 +258,6 @@
 
       <!-- Right: Sync Status Pill + Refresh + Dark Mode Toggle -->
       <div class="flex items-center gap-2 shrink-0">
-        <!-- Data Sync Status Pill -->
         <div
           id="sync-badge"
           class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl toss-sub text-[11px] font-semibold text-sub"
@@ -272,7 +269,6 @@
           <span id="sync-status-text" class="font-mono tabular-nums">동기화 중...</span>
         </div>
 
-        <!-- Manual Refresh Button -->
         <button
           type="button"
           id="btn-refresh"
@@ -284,7 +280,6 @@
           <i id="refresh-icon" data-lucide="refresh-cw" class="w-4 h-4"></i>
         </button>
 
-        <!-- Theme Toggle Button (Clean White <-> Deep Charcoal Dark) -->
         <button
           type="button"
           onclick="toggleTheme()"
@@ -326,27 +321,25 @@
   <main class="max-w-[1200px] w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 flex-1">
 
     <!-- =======================================================
-         TAB 1: 실시간 대시보드 (5 CLEAN, INTUITIVE BLOCKS)
+         TAB 1: 실시간 대시보드
          ======================================================= -->
     <div id="tab-dashboard" class="space-y-5">
 
       <!-- =====================================================
-           BLOCK A: 4 KEY KPI CARDS (TSM, 2330.TW, ADR PREMIUM, FX)
+           BLOCK A: 4 KEY KPI CARDS (TSM WIDGET+KRW, 2330.TW, ADR, FX)
            ===================================================== -->
       <section aria-label="핵심 시세 지표" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- KPI 1: 미국 ADR (TSM) -->
-        <div class="toss-card rounded-2xl p-5 flex flex-col justify-between gap-2.5">
+        <!-- KPI 1: 미국 ADR (TSM) - TradingView Live Widget + KRW Conversion -->
+        <div class="toss-card rounded-2xl p-4 flex flex-col justify-between gap-2">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-sub">미국 ADR (TSM)</span>
-            <span class="text-[11px] font-mono font-semibold text-muted">NYSE</span>
+            <span id="kpi-tsm-session" class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600">LIVE TICK</span>
           </div>
+          <!-- TradingView Live Single Quote Widget (Reloaded on theme toggle) -->
+          <div id="tv-quote-wrapper" class="h-[74px] w-full overflow-hidden rounded-xl border border-[var(--border-card)] bg-[var(--bg-sub)]"></div>
           <div>
-            <div class="flex items-baseline gap-2">
-              <span id="kpi-tsm-price" class="text-2xl font-extrabold font-mono text-main tabular-nums">$342.34</span>
-              <span id="kpi-tsm-change" class="text-xs font-bold font-mono text-krUp tabular-nums">+1.85%</span>
-            </div>
-            <div id="kpi-tsm-krw" class="text-sm font-bold font-mono text-sub mt-1 tabular-nums">≈ 458,681원</div>
-            <div class="text-[11px] text-muted mt-1">1 ADR = 대만 본주 5주</div>
+            <div id="kpi-tsm-krw" class="text-sm font-bold font-mono text-sub tabular-nums">≈ 458,681원</div>
+            <div class="text-[11px] text-muted mt-0.5">1 ADR = 대만 본주 5주</div>
           </div>
         </div>
 
@@ -389,7 +382,7 @@
             </div>
           </div>
 
-          <!-- Inline ADR Calculator Form (TSM, 2330.TW, USD/TWD, USD/KRW) -->
+          <!-- Inline ADR Calculator Form -->
           <div id="adr-calc-drawer" class="hidden pt-3 mt-1 border-t border-[var(--border-card)] space-y-2">
             <div class="grid grid-cols-2 gap-1.5">
               <div>
@@ -442,7 +435,7 @@
       </section>
 
       <!-- =====================================================
-           BLOCK B: 주요 투자 일정 D-DAY BAR (3-COLUMN LIVE STRIP)
+           BLOCK B: 주요 투자 일정 D-DAY BAR
            ===================================================== -->
       <section aria-label="주요 투자 일정 D-Day" class="toss-card rounded-2xl p-4">
         <div class="flex items-center justify-between gap-2 mb-3 px-0.5">
@@ -454,7 +447,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <!-- Event 1: Monthly Revenue -->
           <div class="toss-sub rounded-xl px-4 py-3 flex items-center justify-between gap-3">
             <div class="min-w-0">
               <div class="text-xs font-bold text-main truncate">11월 월간 매출 발표</div>
@@ -465,7 +457,6 @@
             </div>
           </div>
 
-          <!-- Event 2: Q4 Earnings & Call -->
           <div class="toss-sub rounded-xl px-4 py-3 flex items-center justify-between gap-3">
             <div class="min-w-0">
               <div class="text-xs font-bold text-main truncate">2026 Q4 실적 &amp; 어닝콜</div>
@@ -476,7 +467,6 @@
             </div>
           </div>
 
-          <!-- Event 3: Next Quarterly Ex-Dividend -->
           <div class="toss-sub rounded-xl px-4 py-3 flex items-center justify-between gap-3">
             <div class="min-w-0">
               <div class="text-xs font-bold text-main truncate">다음 분기 배당락일</div>
@@ -490,7 +480,7 @@
       </section>
 
       <!-- =====================================================
-           BLOCK C: TSM 단독 실시간 주가 차트 (TRADINGVIEW WIDGET)
+           BLOCK C: TSM 단독 실시간 주가 차트
            ===================================================== -->
       <section aria-label="TSM 실시간 주가 차트" class="toss-card rounded-2xl p-4 sm:p-5">
         <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3.5">
@@ -517,7 +507,7 @@
            BLOCK D: 2-COLUMN PERFORMANCE & PROCESS NODE CHARTS
            ===================================================== -->
       <section aria-label="월간 매출 및 공정별 매출 비중" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <!-- Left Card (7 cols): 2026 Monthly Revenue + Q3 Core Chips + 3-Line Summary -->
+        <!-- Left Card (7 cols) -->
         <div class="lg:col-span-7 toss-card rounded-2xl p-5 flex flex-col justify-between gap-4">
           <div>
             <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
@@ -538,7 +528,6 @@
             </div>
           </div>
 
-          <!-- 3 Compact Q3 Official Stat Chips -->
           <div class="grid grid-cols-3 gap-2.5">
             <div class="toss-sub rounded-xl p-3">
               <div class="text-[11px] text-sub font-medium">매출총이익률</div>
@@ -557,7 +546,6 @@
             </div>
           </div>
 
-          <!-- 2026 Q3 Earnings Call 3-Line Summary -->
           <div class="toss-sub rounded-xl p-4 space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold text-main">2026 Q3 어닝콜 3줄 요약</span>
@@ -580,7 +568,7 @@
           </div>
         </div>
 
-        <!-- Right Card (5 cols): Process Node Revenue Share (2 Toggle Views) -->
+        <!-- Right Card (5 cols) -->
         <div class="lg:col-span-5 toss-card rounded-2xl p-5 flex flex-col justify-between gap-4">
           <div>
             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
@@ -588,7 +576,6 @@
                 <h2 class="text-base font-extrabold text-main">공정별 매출 비중</h2>
                 <p class="text-[11px] text-muted mt-0.5">2nm · 3nm · 5nm · 7nm 공식 IR</p>
               </div>
-              <!-- 2 View Toggle Buttons -->
               <div class="flex items-center gap-1 p-1 rounded-xl toss-sub text-[11px] font-bold">
                 <button
                   type="button"
@@ -605,18 +592,15 @@
               </div>
             </div>
 
-            <!-- View 1: 2026 Q3 Doughnut Chart -->
             <div id="node-view-q3" class="space-y-4">
               <div class="relative h-[230px] w-full flex items-center justify-center">
                 <canvas id="nodeDoughnutChart"></canvas>
-                <!-- Center Callout -->
                 <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                   <span class="text-[10px] font-semibold text-muted">7nm 이하 선단</span>
                   <span class="text-2xl font-extrabold font-mono text-main tabular-nums">79%</span>
                 </div>
               </div>
 
-              <!-- Clean Legend Grid -->
               <div class="grid grid-cols-2 gap-2 text-xs">
                 <div class="toss-sub rounded-xl px-3 py-2 flex items-center justify-between">
                   <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-[#D71920]"></span><span class="font-bold text-main">2nm</span></div>
@@ -641,7 +625,6 @@
               </div>
             </div>
 
-            <!-- View 2: 25Q4 -> 26Q3 Stacked Bar Chart -->
             <div id="node-view-trend" class="hidden space-y-4">
               <div class="relative h-[270px] w-full">
                 <canvas id="nodeTrendChart"></canvas>
@@ -670,13 +653,11 @@
           </div>
 
           <div class="flex items-center gap-2">
-            <!-- Language Toggle Tabs -->
             <div class="flex items-center gap-1 p-1 rounded-xl toss-sub text-xs font-bold">
               <button type="button" data-lang="ALL" onclick="filterNews('ALL')" class="news-filter px-2.5 py-1 rounded-lg transition cursor-pointer tab-active">전체</button>
               <button type="button" data-lang="KO" onclick="filterNews('KO')" class="news-filter px-2.5 py-1 rounded-lg transition cursor-pointer tab-idle">한국어</button>
               <button type="button" data-lang="EN" onclick="filterNews('EN')" class="news-filter px-2.5 py-1 rounded-lg transition cursor-pointer tab-idle">English</button>
             </div>
-            <!-- News Refresh Button -->
             <button
               type="button"
               onclick="loadLiveData(true)"
@@ -696,13 +677,11 @@
     </div>
 
     <!-- =======================================================
-         TAB 2: 고객사 · 경쟁력 (3 ANALYTICAL SECTIONS)
+         TAB 2: 고객사 · 경쟁력
          ======================================================= -->
     <div id="tab-company" class="hidden space-y-6">
 
-      <!-- =====================================================
-           SECTION 1: 핵심 고객사 현황 및 매출 비중 (2026E 시장 추정)
-           ===================================================== -->
+      <!-- SECTION 1: 핵심 고객사 현황 -->
       <section aria-label="핵심 고객사 현황" class="toss-card rounded-2xl p-5 space-y-5">
         <div class="flex flex-wrap items-start justify-between gap-2">
           <div>
@@ -713,12 +692,10 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-          <!-- Horizontal Bar Chart (5 cols) -->
           <div class="lg:col-span-5 relative h-[310px] w-full">
             <canvas id="clientShareChart"></canvas>
           </div>
 
-          <!-- Interactive Client Table (7 cols) -->
           <div class="lg:col-span-7 overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
@@ -729,9 +706,7 @@
                   <th class="py-2.5 px-3 font-semibold">핵심 칩셋 및 포인트</th>
                 </tr>
               </thead>
-              <tbody id="client-table-body" class="divide-y divide-[var(--border-card)]">
-                <!-- Populated by JS -->
-              </tbody>
+              <tbody id="client-table-body" class="divide-y divide-[var(--border-card)]"></tbody>
             </table>
           </div>
         </div>
@@ -741,9 +716,7 @@
         </div>
       </section>
 
-      <!-- =====================================================
-           SECTION 2: 경쟁사 대비 압도적 우위 (TSMC vs 삼성 · 인텔)
-           ===================================================== -->
+      <!-- SECTION 2: 경쟁사 대비 압도적 우위 -->
       <section aria-label="경쟁사 대비 압도적 우위" class="toss-card rounded-2xl p-5 space-y-5">
         <div class="flex flex-wrap items-start justify-between gap-2">
           <div>
@@ -753,7 +726,6 @@
           <span class="px-2.5 py-1 rounded-lg bg-tsmcRed/10 text-tsmcRed text-[11px] font-mono font-bold">MARKET SHARE 75.0%</span>
         </div>
 
-        <!-- Top: Global Pure-Play Foundry Market Share Horizontal Bar Chart (with Intel Foundry) -->
         <div class="toss-sub rounded-xl p-4">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-bold text-main">글로벌 순수 파운드리 점유율 비교</span>
@@ -764,7 +736,6 @@
           </div>
         </div>
 
-        <!-- Bottom: Clean 4-Row Comparison Table -->
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs min-w-[640px]">
             <thead>
@@ -813,16 +784,13 @@
         </div>
       </section>
 
-      <!-- =====================================================
-           SECTION 3: 글로벌 팹(Fab) & 공정 로드맵 요약
-           ===================================================== -->
+      <!-- SECTION 3: 글로벌 팹 & 공정 로드맵 -->
       <section aria-label="글로벌 팹 및 공정 로드맵" class="toss-card rounded-2xl p-5 space-y-5">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <h2 class="text-base sm:text-lg font-extrabold text-main">글로벌 팹(Fab) &amp; 공정 로드맵 요약</h2>
           <span class="text-[11px] font-mono text-muted">GLOBAL FAB NETWORK</span>
         </div>
 
-        <!-- 4 Compact Global Fab Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <div class="toss-sub rounded-xl p-4 flex flex-col justify-between gap-2">
             <div class="flex items-center justify-between">
@@ -861,7 +829,6 @@
           </div>
         </div>
 
-        <!-- Simple N7 -> N5 -> N3 -> N2 -> A16 Timeline Strip -->
         <div class="toss-sub rounded-xl p-4">
           <div class="text-xs font-bold text-main mb-3">초미세 공정 진화 로드맵</div>
           <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-center">
@@ -901,24 +868,24 @@
        ========================================================= -->
   <footer class="border-t border-[var(--border-card)] bg-[var(--bg-card)] mt-8">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-muted">
-      <span>재석이와 함께하는 트슴트슴 · 비공식 개인 투자자 정보 페이지 (Vercel 실시간 API 지원)</span>
+      <span>재석이와 함께하는 트슴트슴 · 비공식 개인 투자자 정보 페이지</span>
       <span id="last-updated-label" class="font-mono tabular-nums">업데이트 확인 중...</span>
     </div>
   </footer>
 
   <!-- =========================================================
-       APPLICATION LOGIC (DUAL REAL-TIME ENGINE + CHARTS + UI)
+       APPLICATION LOGIC
        ========================================================= -->
   <script>
     // =========================================================
-    // 1. STATE & BASELINE DATA (NOV 27, 2026)
+    // 1. STATE & BASELINE DATA
     // =========================================================
     const state = {
-      theme: 'light', // 'light' | 'dark'
-      activeTab: 'dashboard', // 'dashboard' | 'company'
+      theme: 'light',
+      activeTab: 'dashboard',
       tvSymbol: 'NYSE:TSM',
-      nodeView: 'q3', // 'q3' | 'trend'
-      newsLang: 'ALL', // 'ALL' | 'KO' | 'EN'
+      nodeView: 'q3',
+      newsLang: 'ALL',
       manualAdrOverride: false,
       market: {
         tsmPrice: 342.34,
@@ -936,7 +903,6 @@
       news: [],
     };
 
-    // Chart.js Instances
     const charts = {
       monthly: null,
       nodeDoughnut: null,
@@ -945,13 +911,11 @@
       marketShare: null,
     };
 
-    // 2026 Jan-Oct Official Monthly Revenue (NT$B)
     const MONTHLY_2026 = {
       labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'],
       revenue: [365.2, 342.8, 388.4, 412.6, 435.1, 448.9, 476.3, 502.4, 527.0, 586.89],
     };
 
-    // 2026E Market Estimated Client Breakdown
     const CLIENTS_2026E = [
       { name: 'NVIDIA', share: 22.0, node: '3nm / 4nm + CoWoS', desc: '블랙웰·루빈 AI GPU — 최대 고객사 부상', ticker: 'NASDAQ:NVDA', color: '#D71920' },
       { name: 'Apple', share: 18.0, node: '2nm / 3nm', desc: '아이폰 A시리즈·맥 M시리즈 — 2nm 초기 캐파 선점', ticker: 'NASDAQ:AAPL', color: '#191F28' },
@@ -963,7 +927,6 @@
       { name: '기타', share: 25.5, node: '전 공정', desc: '다양한 글로벌 팹리스 (AWS·Marvell·전장 등)', ticker: null, color: '#9CA3AF' },
     ];
 
-    // Fallback News (Used only if both /api/tsmc and RSS fail)
     const FALLBACK_NEWS = [
       {
         title: 'TSMC 2026년 10월 매출 NT$586.89B 역대 최대 경신… 전년 대비 +59.7%',
@@ -1010,7 +973,39 @@
     ];
 
     // =========================================================
-    // 2. THEME & MAIN TAB SWITCHING
+    // 2. TRADINGVIEW SINGLE QUOTE WIDGET (KPI 1)
+    // =========================================================
+    function initTsmQuoteWidget() {
+      const wrapper = document.getElementById('tv-quote-wrapper');
+      if (!wrapper) return;
+      wrapper.innerHTML = '';
+
+      const container = document.createElement('div');
+      container.className = 'tradingview-widget-container h-full w-full';
+
+      const widgetDiv = document.createElement('div');
+      widgetDiv.className = 'tradingview-widget-container__widget h-full w-full';
+      container.appendChild(widgetDiv);
+
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';
+      script.async = true;
+      script.text = JSON.stringify({
+        symbol: 'NYSE:TSM',
+        width: '100%',
+        height: '100%',
+        locale: 'kr',
+        colorTheme: state.theme === 'dark' ? 'dark' : 'light',
+        isTransparent: true,
+      });
+
+      container.appendChild(script);
+      wrapper.appendChild(container);
+    }
+
+    // =========================================================
+    // 3. THEME & MAIN TAB SWITCHING
     // =========================================================
     function toggleTheme() {
       state.theme = state.theme === 'light' ? 'dark' : 'light';
@@ -1022,7 +1017,7 @@
         lucide.createIcons();
       }
 
-      // Dynamically reload TradingView & re-render all Chart.js instances
+      initTsmQuoteWidget();
       initTradingView(state.tvSymbol);
       renderMonthlyRevenueChart();
       renderNodeCharts();
@@ -1054,7 +1049,6 @@
       });
 
       if (!isDash) {
-        // Render Tab 2 charts after container is visible for crisp dimensions
         requestAnimationFrame(() => renderTab2Charts());
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1071,10 +1065,9 @@
     }
 
     // =========================================================
-    // 3. LIVE KST MARKET STATUS BADGE & D-DAY COUNTDOWN
+    // 4. LIVE KST MARKET STATUS & D-DAY COUNTDOWN
     // =========================================================
     function getKstNow() {
-      // Shift to UTC+9 reliably regardless of user's OS timezone
       const now = new Date();
       const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
       return new Date(utcMs + 9 * 3600000);
@@ -1082,17 +1075,12 @@
 
     function updateMarketStatus() {
       const kst = getKstNow();
-      const day = kst.getDay(); // 0=Sun, 6=Sat
+      const day = kst.getDay();
       const mins = kst.getHours() * 60 + kst.getMinutes();
 
-      // Taiwan Market (TWSE): Mon-Fri 10:00 - 14:30 KST
       const twOpen = day >= 1 && day <= 5 && mins >= 600 && mins < 870;
       const twText = twOpen ? '대만장 거래중' : '대만장 마감';
 
-      // US Market (Standard Time Nov-Mar in KST):
-      // Pre-market: 18:00 - 23:30 (Mon-Fri)
-      // Regular: 23:30 - 06:00 (Mon 23:30 -> Sat 06:00)
-      // After-hours: 06:00 - 10:00 (Tue-Sat)
       let usText = '미장 휴장';
       const isWeekday = day >= 1 && day <= 5;
       const isTueToSat = day >= 2 && day <= 6;
@@ -1135,7 +1123,6 @@
       if (Number.isNaN(targetMs)) return { live: false, text: '일정 확인 중' };
 
       const diffMs = targetMs - nowMs;
-      // Within 2 hours after release time => pulsing LIVE badge
       if (diffMs <= 0 && diffMs >= -2 * 3600 * 1000) {
         return { live: true, text: '🔴 LIVE' };
       }
@@ -1178,7 +1165,7 @@
     }
 
     // =========================================================
-    // 4. KPI RENDERING & INLINE ADR CALCULATOR
+    // 5. KPI RENDERING & INLINE ADR CALCULATOR
     // =========================================================
     function formatSignedPct(val) {
       const n = Number(val) || 0;
@@ -1186,6 +1173,7 @@
     }
 
     function setPctColor(el, val) {
+      if (!el) return;
       el.classList.remove('text-krUp', 'text-krDown', 'text-muted');
       if (val > 0) el.classList.add('text-krUp');
       else if (val < 0) el.classList.add('text-krDown');
@@ -1193,19 +1181,18 @@
     }
 
     function renderKpis() {
-      const { tsmPrice, tsmChangePct, twPrice, twChangePct, usdKrw, usdTwd } = state.market;
+      const { tsmPrice, twPrice, twChangePct, usdKrw, usdTwd } = state.market;
       const twdKrw = usdTwd > 0 ? usdKrw / usdTwd : 0;
 
       const tsmKrw = Math.round(tsmPrice * usdKrw);
       const tw1Krw = Math.round(twPrice * twdKrw);
       const tw5Krw = Math.round(twPrice * 5 * twdKrw);
 
-      // KPI 1: TSM
-      document.getElementById('kpi-tsm-price').textContent = `$${tsmPrice.toFixed(2)}`;
-      const tsmChg = document.getElementById('kpi-tsm-change');
-      tsmChg.textContent = formatSignedPct(tsmChangePct);
-      setPctColor(tsmChg, tsmChangePct);
-      document.getElementById('kpi-tsm-krw').textContent = `≈ ${tsmKrw.toLocaleString('ko-KR')}원`;
+      // KPI 1: KRW Conversion below TradingView Single Quote Widget
+      const tsmKrwEl = document.getElementById('kpi-tsm-krw');
+      if (tsmKrwEl) {
+        tsmKrwEl.textContent = `≈ ${tsmKrw.toLocaleString('ko-KR')}원 ($${tsmPrice.toFixed(2)} 기준)`;
+      }
 
       // KPI 2: 2330.TW
       document.getElementById('kpi-tw-price').textContent = `NT$${Math.round(twPrice).toLocaleString('ko-KR')}`;
@@ -1275,15 +1262,11 @@
 
     function resetAdrDefaults() {
       state.manualAdrOverride = false;
-      state.market.tsmPrice = 342.34;
-      state.market.twPrice = 2180;
-      state.market.usdTwd = 32.956;
-      state.market.usdKrw = 1339.84;
       loadLiveData(true);
     }
 
     // =========================================================
-    // 5. TRADINGVIEW REAL-TIME WIDGET (TSM FOCUSED + SEARCHABLE)
+    // 6. TRADINGVIEW REAL-TIME CHART WIDGET
     // =========================================================
     function initTradingView(symbol) {
       state.tvSymbol = symbol;
@@ -1317,7 +1300,7 @@
     }
 
     // =========================================================
-    // 6. CHART.JS HELPERS & TAB 1 CHARTS
+    // 7. CHART.JS HELPERS & TAB 1 CHARTS
     // =========================================================
     function getChartColors() {
       const dark = state.theme === 'dark';
@@ -1405,7 +1388,6 @@
     function renderNodeCharts() {
       const c = getChartColors();
 
-      // View 1: 2026 Q3 Doughnut
       const dCtx = document.getElementById('nodeDoughnutChart');
       if (dCtx && state.nodeView === 'q3') {
         if (charts.nodeDoughnut) charts.nodeDoughnut.destroy();
@@ -1439,7 +1421,6 @@
         });
       }
 
-      // View 2: 25Q4 -> 26Q3 Stacked Bar
       const tCtx = document.getElementById('nodeTrendChart');
       if (tCtx && state.nodeView === 'trend') {
         if (charts.nodeTrend) charts.nodeTrend.destroy();
@@ -1497,7 +1478,7 @@
     }
 
     // =========================================================
-    // 7. TAB 2 CHARTS & INTERACTIVE CLIENT TABLE
+    // 8. TAB 2 CHARTS & CLIENT TABLE
     // =========================================================
     function renderClientTable() {
       const tbody = document.getElementById('client-table-body');
@@ -1524,7 +1505,6 @@
     function renderTab2Charts() {
       const c = getChartColors();
 
-      // 1) Client Share Horizontal Bar Chart
       const cCtx = document.getElementById('clientShareChart');
       if (cCtx) {
         if (charts.clientShare) charts.clientShare.destroy();
@@ -1575,7 +1555,6 @@
         });
       }
 
-      // 2) Global Foundry Market Share Horizontal Bar Chart (Includes Intel Foundry)
       const mCtx = document.getElementById('marketShareChart');
       if (mCtx) {
         if (charts.marketShare) charts.marketShare.destroy();
@@ -1629,7 +1608,7 @@
     }
 
     // =========================================================
-    // 8. NEWS FEED WITH RELATIVE TIME & FILTERING
+    // 9. NEWS FEED
     // =========================================================
     function formatRelativeTime(dateInput) {
       if (!dateInput) return '';
@@ -1707,13 +1686,13 @@
     }
 
     // =========================================================
-    // 9. DUAL REAL-TIME DATA ENGINE (/api/tsmc -> LIVE FALLBACK)
+    // 10. DUAL REAL-TIME DATA ENGINE (/api/tsmc -> LIVE FALLBACK)
     // =========================================================
-    async function fetchJsonWithTimeout(url, ms = 4500) {
+    async function fetchJsonWithTimeout(url, ms = 5000) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), ms);
       try {
-        const res = await fetch(url, { signal: controller.signal });
+        const res = await fetch(url, { signal: controller.signal, cache: 'no-store' });
         clearTimeout(timer);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();
@@ -1744,12 +1723,12 @@
 
       const syncText = document.getElementById('sync-status-text');
       const newsBadge = document.getElementById('news-source-badge');
-      const calLabel = document.getElementById('calendar-source-label');
 
-      // STEP 1: Attempt Vercel Serverless API (/api/tsmc)
+      // STEP 1: Vercel Serverless API (/api/tsmc)
+      let apiSuccess = false;
       try {
-        const apiData = await fetchJsonWithTimeout(`/api/tsmc?t=${Date.now()}`, 3000);
-        if (apiData && (apiData.tsm || apiData.tw2330 || apiData.fx)) {
+        const apiData = await fetchJsonWithTimeout(`/api/tsmc?t=${Date.now()}`, 5000);
+        if (apiData && apiData.ok) {
           if (!state.manualAdrOverride) {
             if (apiData.tsm?.price) state.market.tsmPrice = Number(apiData.tsm.price);
             if (apiData.tsm?.changePct !== undefined) state.market.tsmChangePct = Number(apiData.tsm.changePct);
@@ -1759,108 +1738,100 @@
             if (apiData.fx?.usdTwd) state.market.usdTwd = Number(apiData.fx.usdTwd);
           }
 
-          // Update D-Day target dates if returned by /api/tsmc
-          if (apiData.calendar) {
-            if (apiData.calendar.monthlyRevenue) state.calendar.monthlyRevenue = apiData.calendar.monthlyRevenue;
-            if (apiData.calendar.earnings) state.calendar.earnings = apiData.calendar.earnings;
-            if (apiData.calendar.exDividend) state.calendar.exDividend = apiData.calendar.exDividend;
-            if (calLabel) calLabel.textContent = 'TSMC 공식 캘린더 자동 연동';
+          const sessionEl = document.getElementById('kpi-tsm-session');
+          if (sessionEl && apiData.tsm?.session) {
+            sessionEl.textContent = apiData.tsm.session;
           }
 
           if (Array.isArray(apiData.news) && apiData.news.length > 0) {
             state.news = apiData.news;
           }
 
+          apiSuccess = true;
           renderKpis();
-          updateCalendarCountdowns();
-          renderNews();
+          if (state.news.length > 0) renderNews();
 
           const ts = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
           if (syncText) syncText.textContent = 'LIVE · Vercel API';
-          if (newsBadge) newsBadge.textContent = 'LIVE · Vercel API';
+          if (newsBadge && state.news.length > 0) newsBadge.textContent = 'LIVE · Vercel API';
           document.getElementById('last-updated-label').textContent = `최근 동기화: ${ts} (Vercel API)`;
-
-          if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 400);
-          return;
         }
       } catch (_) {
-        // Proceed to Step 2 browser fallback seamlessly
+        // Fallback below
       }
 
-      // STEP 2: Fallback for local/preview without /api/tsmc (Live FX + Live RSS)
-      let fxOk = false;
-      let newsOk = false;
-
-      // 2-A. Live Exchange Rates
-      try {
-        const fxJson = await fetchJsonWithTimeout('https://open.er-api.com/v6/latest/USD', 4500);
-        if (fxJson?.rates?.KRW && fxJson?.rates?.TWD) {
-          if (!state.manualAdrOverride) {
-            state.market.usdKrw = Number(fxJson.rates.KRW);
-            state.market.usdTwd = Number(fxJson.rates.TWD);
+      // STEP 2: Fallback FX & News (for preview or if API returned no news)
+      if (!apiSuccess) {
+        let fxOk = false;
+        try {
+          const fxJson = await fetchJsonWithTimeout('https://open.er-api.com/v6/latest/USD', 4500);
+          if (fxJson?.rates?.KRW && fxJson?.rates?.TWD) {
+            if (!state.manualAdrOverride) {
+              state.market.usdKrw = Number(fxJson.rates.KRW);
+              state.market.usdTwd = Number(fxJson.rates.TWD);
+            }
+            fxOk = true;
           }
-          fxOk = true;
-        }
-      } catch (_) {
-        // Keep baseline FX
+        } catch (_) {}
+
+        renderKpis();
+        const ts = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        if (syncText) syncText.textContent = fxOk ? '실시간 환율·위젯' : '위젯 실시간';
+        document.getElementById('last-updated-label').textContent = `최근 동기화: ${ts}`;
       }
 
-      // 2-B. Live Google News RSS (KO + EN)
-      try {
-        const [koRes, enRes] = await Promise.allSettled([
-          fetchRssNews('https://news.google.com/rss/search?q=TSMC&hl=ko&gl=KR&ceid=KR:ko', 'KO'),
-          fetchRssNews('https://news.google.com/rss/search?q=TSMC+stock&hl=en-US&gl=US&ceid=US:en', 'EN'),
-        ]);
-        const merged = [];
-        if (koRes.status === 'fulfilled') merged.push(...koRes.value);
-        if (enRes.status === 'fulfilled') merged.push(...enRes.value);
+      if (state.news.length === 0) {
+        let newsOk = false;
+        try {
+          const [koRes, enRes] = await Promise.allSettled([
+            fetchRssNews('https://news.google.com/rss/search?q=TSMC&hl=ko&gl=KR&ceid=KR:ko', 'KO'),
+            fetchRssNews('https://news.google.com/rss/search?q=TSMC+stock&hl=en-US&gl=US&ceid=US:en', 'EN'),
+          ]);
+          const merged = [];
+          if (koRes.status === 'fulfilled') merged.push(...koRes.value);
+          if (enRes.status === 'fulfilled') merged.push(...enRes.value);
 
-        if (merged.length > 0) {
-          merged.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-          state.news = merged;
-          newsOk = true;
-        } else {
+          if (merged.length > 0) {
+            merged.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+            state.news = merged;
+            newsOk = true;
+          } else {
+            state.news = [...FALLBACK_NEWS];
+          }
+        } catch (_) {
           state.news = [...FALLBACK_NEWS];
         }
-      } catch (_) {
-        state.news = [...FALLBACK_NEWS];
+        renderNews();
+        if (newsBadge) newsBadge.textContent = newsOk ? 'LIVE RSS 연동' : '큐레이션 헤드라인';
       }
-
-      renderKpis();
-      renderNews();
-
-      const ts = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      if (syncText) syncText.textContent = fxOk || newsOk ? '실시간 환율·뉴스' : '기준 데이터';
-      if (newsBadge) newsBadge.textContent = newsOk ? 'LIVE RSS 연동' : '큐레이션 헤드라인';
-      document.getElementById('last-updated-label').textContent = `최근 동기화: ${ts}`;
 
       if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 400);
     }
 
     // =========================================================
-    // 10. INITIALIZATION
+    // 11. INITIALIZATION
     // =========================================================
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
 
-      // Initial renders
       updateMarketStatus();
       updateCalendarCountdowns();
       renderKpis();
+      initTsmQuoteWidget();
       initTradingView('NYSE:TSM');
       renderMonthlyRevenueChart();
       renderNodeCharts();
       renderClientTable();
 
-      // 1-second live KST countdown & market status updater
+      // 1-second live KST countdown & market status
       setInterval(() => {
         updateCalendarCountdowns();
         updateMarketStatus();
       }, 1000);
 
-      // Initial live data fetch + 60-second auto-sync
+      // Initial live data fetch + 15-second auto-sync
       loadLiveData(false);
-      setInterval(() => loadLiveData(false), 60000);
+      setInterval(() => loadLiveData(false), 15000);
     });
   </script>
 </body>
