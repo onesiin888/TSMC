@@ -1,12 +1,11 @@
 // /api/tsmc.js — Vercel Serverless Function for Real-time TSM, 2330.TW, FX & News
 export default async function handler(req, res) {
-  // Allow CORS for browser fetch
+  // Disable caching so real-time prices update instantly
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Cache-Control', 's-maxage=5, stale-while-revalidate=10');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
 
   try {
-    // 1. Fetch TSM (US ADR), 2330.TW (Taiwan Stock) & FX Rates from Yahoo Finance API
     const tickers = ['TSM', '2330.TW', 'KRW=X', 'TWD=X'];
     const queryUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers.join(',')}`;
 
@@ -25,10 +24,10 @@ export default async function handler(req, res) {
       const results = json?.quoteResponse?.result || [];
 
       results.forEach((q) => {
-        // Prioritize postMarket / preMarket / regular market prices for real-time overnight sync
-        const price = q.postMarketPrice || q.preMarketPrice || q.regularMarketPrice;
+        // Fallback cascade: regular market price -> post market -> pre market
+        const price = q.regularMarketPrice || q.postMarketPrice || q.preMarketPrice;
         const prevClose = q.regularMarketPreviousClose;
-        const changePct = prevClose && price ? ((price - prevClose) / prevClose) * 100 : (q.regularMarketChangePercent || 0);
+        const changePct = q.regularMarketChangePercent !== undefined ? q.regularMarketChangePercent : (prevClose && price ? ((price - prevClose) / prevClose) * 100 : 0);
 
         if (q.symbol === 'TSM') {
           if (price) tsmData = { price, changePct };
@@ -42,7 +41,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // 2. Fetch Live Google News RSS for TSMC
     let newsItems = [];
     try {
       const rssUrl = `https://news.google.com/rss/search?q=TSMC+stock&hl=ko&gl=KR&ceid=KR:ko`;
@@ -57,11 +55,8 @@ export default async function handler(req, res) {
           url: item.link || 'https://investor.tsmc.com',
         }));
       }
-    } catch (_) {
-      // Fallback handled on client
-    }
+    } catch (_) {}
 
-    // 3. Return consolidated JSON response
     return res.status(200).json({
       success: true,
       timestamp: new Date().toISOString(),
